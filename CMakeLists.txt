@@ -1,12 +1,24 @@
+project(kdelibs)
+
+set(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake")
+
+cmake_minimum_required(VERSION 2.8)
+
+set(CMAKE_INCLUDE_CURRENT_DIR ON)
+set(CMAKE_INCLUDE_DIRECTORIES_PROJECT_BEFORE ON)
+
+include(MacroLibrary)
+include(FindQt4)
+include(FindKDE4Internal)
+include(ConfigureChecks)
+
+configure_file(config.h.cmake ${CMAKE_CURRENT_BINARY_DIR}/config.h)
+configure_file(kdecore/kdefakes.h.cmake ${CMAKE_CURRENT_BINARY_DIR}/kdecore/kdefakes.h)
+
+include_directories(${CMAKE_SOURCE_DIR} ${CMAKE_BINARY_DIR} ${CMAKE_SOURCE_DIR}/interfaces)
 include_directories( ${CMAKE_CURRENT_SOURCE_DIR}
                      ${CMAKE_CURRENT_BINARY_DIR}
                      ${QT_INCLUDE_DIR}
                      ${QT_QTCORE_INCLUDE_DIR} )
 
-# Cannot compile with enable-final because of too many "using namespace" in
-# .cpp files, leading to conflicts e.g. between
-# Solid::Backends::Hal::AcAdapter and Solid::Ifaces::AcAdapter
-kde4_no_enable_final(solid)
-
-add_subdirectory( solid )
-add_subdirectory( tests )
+add_subdirectory(solid)
